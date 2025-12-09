@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tulsi Enterprise</title>
+<style>
+:root{
+  --bg:#f4f6f8;
+  --card:#ffffff;
+  --accent:#bd1b1b;
+  --muted:#6b7280;
+  --radius:12px;
+  --max-width:1200px;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  color:#111827;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);display:flex;justify-content:center;padding:24px;}
+.site{width:100%;max-width:var(--max-width)}
+
+/* HEADER */
+header.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  padding:18px;
+  border-radius:14px;
+  background:linear-gradient(90deg,var(--accent),#ff6b6b);
+  color:#fff;
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+}
+.brand-left{
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+.brand-left img.logo{
+  width:72px;
+  height:72px;
+  border-radius:10px;
+  object-fit:cover;
+  border:2px solid rgba(255,255,255,0.12);
+}
+.brand-info{
+  line-height:1.2;
+  text-align:left;
+}
+.brand-name{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:0.6px;
+}
+.brand-tag{
+  font-size:13px;
+  opacity:0.95;
+}
+nav.header-nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+nav.header-nav a{
+  color:rgba(255,255,255,0.95);
+  text-decoration:none;
+  font-weight:700;
+  padding:8px 12px;
+  border-radius:8px;
+}
+nav.header-nav a:hover{
+  background:rgba(255,255,255,0.08);
+}
+
+/* HERO */
+.hero{display:flex;gap:20px;align-items:center;margin:22px 0;flex-wrap:wrap}
+.hero .text{flex:1;min-width:200px}
+.hero h1{margin:0;font-size:30px}
+.hero p{margin:8px 0;color:var(--muted)}
+.hero .hero-img{width:320px;height:180px;border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(16,24,40,0.08);flex-shrink:0}
+.hero .hero-img img{width:100%;height:100%;object-fit:cover}
+
+/* FILTER BAR */
+.control-bar{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.search{flex:1;min-width:200px}
+.search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e6e6e9}
+.select{padding:10px;border-radius:10px;border:1px solid #e6e6e9;background:#fff}
+
+/* PRODUCTS GRID */
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.product{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 20px rgba(16,24,40,0.06);display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease}
+.product:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(16,24,40,0.08)}
+.product .img{height:150px;border-radius:10px;overflow:hidden}
+.product .img img{width:100%;height:100%;object-fit:cover}
+.p-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.p-name{font-weight:800;font-size:15px}
+.p-price{color:var(--accent);font-weight:900}
+.p-sub{color:var(--muted);font-size:13px;margin-top:6px}
+.p-actions{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;padding:10px;border-radius:10px;text-align:center;font-weight:800;cursor:pointer;border:0;font-size:14px}
+.btn-order{background:var(--accent);color:#fff}
+.btn-details{background:transparent;border:1px solid #e6e6e9}
+
+/* CONTACT BOTTOM */
+.contact-bottom{margin-top:22px;background:linear-gradient(180deg,rgba(255,255,255,0.9),#fff);padding:16px;border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:center}
+.c-box h3{margin:0;font-size:14px}
+.c-box p{margin:6px 0 0 0;color:var(--muted);font-size:13px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.6);z-index:60;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-content{width:100%;max-width:720px;background:var(--card);border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative}
+.modal-left img{width:100%;height:320px;object-fit:cover;border-radius:10px}
+.modal-right h2{margin:0;font-size:20px}
+.modal-right p{color:var(--muted);margin-top:8px}
+.modal-actions{display:flex;gap:10px;margin-top:14px;flex-direction:column}
+.modal-actions select{padding:8px;border-radius:8px;border:1px solid #e6e6e9;width:100%}
+.modal .close{position:absolute;top:18px;right:18px;background:transparent;border:0;font-size:22px;color:#fff;cursor:pointer}
+
+/* MEDIA QUERIES */
+@media (max-width:900px){
+  header.site-header{flex-direction:column;align-items:center;text-align:center;padding:14px;}
+  .brand-left{flex-direction:column;gap:8px;align-items:center;}
+  .brand-left img.logo{width:56px;height:56px;}
+  nav.header-nav{justify-content:center;width:100%;margin-top:10px;gap:10px;}
+}
+@media (max-width:800px){
+  .modal-content{grid-template-columns:1fr;}
+  .modal-left img{height:220px}
+  .hero .hero-img{width:100%;height:160px}
+  .contact-bottom{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="site">
+
+<header class="site-header">
+  <div class="brand-left">
+    <img class="logo" src="images/te-logo.jpg" alt="Tulsi Enterprise Logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/150'">
+    <div class="brand-info">
+      <div class="brand-name">TULSI ENTERPRISE</div>
+      <div class="brand-tag">Scented Agarbatti, Dhoop Sticks & Home Fragrance</div>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="text">
+    <h1>Natural & Premium Agarbatti & Dhoop</h1>
+    <p>Explore our best-selling incense sticks and dhoop — available in multiple fragrances. Tap any product to view details & place order on WhatsApp.</p>
+  </div>
+  <div class="hero-img"><img src="images/hero.jpg" alt="hero" onerror="this.onerror=null;this.src='https://via.placeholder.com/600x360'"></div>
+</section>
+
+<div class="control-bar">
+  <div class="search"><input id="searchInput" placeholder="Search: Incense sticks scented/raw, Dhoop sticks scented/raw"></div>
+  <select id="categoryFilter" class="select">
+    <option value="all">All categories</option>
+    <option value="agarbatti">Agarbatti</option>
+    <option value="dhoop">Dhoop</option>
+  </select>
+</div>
+
+<section id="products" class="products" aria-live="polite"></section>
+
+<div id="productModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="close" aria-label="Close modal" onclick="closeModal()">✕</button>
+  <div class="modal-content" role="document">
+    <div class="modal-left"><img id="modalImg" src="" alt="product image"></div>
+    <div class="modal-right">
+      <h2 id="modalName"></h2>
+      <p id="modalPrice" style="font-weight:800;color:var(--accent);"></p>
+      <p id="modalDesc"></p>
+      <div class="modal-actions">
+        <select id="modalWeight">
+          <option value="200GM">200GM</option>
+          <option value="500GM">500GM</option>
+          <option value="1KG">1KG</option>
+        </select>
+        <select id="modalSize"></select>
+        <a id="modalOrder" class="btn btn-order" target="_blank" rel="noopener">Order on WhatsApp</a>
+        <button class="btn btn-details" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="contact" class="contact-bottom">
+  <div class="c-box">
+    <h3>Phone</h3>
+    <p><a href="tel:+919662235669">+91 96662 35669</a></p>
+  </div>
+  <div class="c-box">
+    <h3>Instagram</h3>
+    <p><a href="https://www.instagram.com/tulsienterprise2" target="_blank">@tulsienterprise2</a></p>
+  </div>
+  <div class="c-box">
+    <h3>Location</h3>
+    <p><a href="https://maps.app.goo.gl/5dGsm2WmXb1DmM1L6" target="_blank">View on map</a></p>
+  </div>
+</section>
+
+<script>
+const productsData = [];
+for(let i=1;i<=20;i++){
+  productsData.push({id:i,name:'Tulsi Agarbatti '+i,price:50+5*i,weight:'200GM',category:'agarbatti',img:'images/IMG'+i+'.jpg'});
+}
+for(let i=21;i<=40;i++){
+  productsData.push({id:i,name:'Tulsi Dhoop '+(i-20),price:50+5*(i-20),weight:'200GM',category:'dhoop',img:'images/IMG'+i+'.jpg'});
+}
+
+const productsEl = document.querySelector('.products');
+
+function createProductCard(p){
+  const art = document.createElement('article');
+  art.className = 'product';
+  art.innerHTML = `
+    <div class="img"><img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x300'"></div>
+    <div class="p-meta">
+      <div class="p-name">${p.name}</div>
+      <div class="p-price">₹${p.price}</div>
+    </div>
+    <div class="p-sub">${p.weight} • ${p.category}</div>
+    <div class="p-actions">
+      <button class="btn btn-details" onclick="openModal(${p.id})">Details</button>
+    </div>
+  `;
+  return art;
+}
+
+function renderProducts(list){
+  productsEl.innerHTML = '';
+  list.forEach(p=>productsEl.appendChild(createProductCard(p)));
+}
+
+renderProducts(productsData);
+
+const modal = document.getElementById('productModal');
+const modalWeight = document.getElementById('modalWeight');
+const modalSize = document.getElementById('modalSize');
+
+function openModal(id){
+  const p = productsData.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalPrice').textContent = '₹'+p.price+' • '+p.weight;
+  document.getElementById('modalDesc').textContent = (p.category==='agarbatti'? 'Premium scented agarbatti made with natural ingredients.':'High quality dhoop sticks for a long-lasting aroma.');
+  document.getElementById('modalImg').src = p.img;
+  document.getElementById('modalImg').onerror = function(){this.src='https://via.placeholder.com/600x400'};
+  modalWeight.value = p.weight;
+
+  // size options dynamically
+  modalSize.innerHTML = '';
+  let sizes = [];
+  if(p.category==='agarbatti') sizes = ['8inch','9inch'];
+  else if(p.category==='dhoop') sizes = ['3inch','4inch','6inch'];
+  sizes.forEach(s=>{
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = s;
+    modalSize.appendChild(opt);
+  });
+
+  updateOrderLink(p);
+
+  modalWeight.onchange = modalSize.onchange = function(){updateOrderLink(p);}
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateOrderLink(p){
+  const selectedWeight = modalWeight.value;
+  const selectedSize = modalSize.value;
+  const msg = `Hi Tulsi Enterprise, I would like to order: ${p.name} (${selectedWeight}, ${selectedSize}) at ₹${p.price}`;
+  document.getElementById('modalOrder').href = 'https://wa.me/919724577928?text=' + encodeURIComponent(msg);
+}
+
+function closeModal(){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeModal(); });
+
+// search + filter
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+function applyFilters(){
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cat = document.getElementById('categoryFilter').value;
+  const filtered = productsData.filter(p=>{
+    let materialFilter = false;
+    if(q.includes('incense sticks scented')) materialFilter = p.category==='agarbatti' && p.name.toLowerCase().includes('scented');
+    else if(q.includes('incense sticks raw')) materialFilter = p.category==='agarbatti' && p.name.toLowerCase().includes('agarbatti');
+    else if(q.includes('dhoop sticks scented')) materialFilter = p.category==='dhoop' && p.name.toLowerCase().includes('scented');
+    else if(q.includes('dhoop sticks raw')) materialFilter = p.category==='dhoop' && p.name.toLowerCase().includes('dhoop');
+    else materialFilter = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+    const matchCat = (cat==='all')? true : p.category===cat;
+    return materialFilter && matchCat;
+  });
+  renderProducts(filtered);
+}
+</script>
+</body>
+</html>
