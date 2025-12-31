@@ -3,9 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
-<link rel="apple-touch-icon" href="logo.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://via.placeholder.com https://*.google.com https://*.googleapis.com https://*.gstatic.com;">
 <title>Tulsi Enterprise</title>
 <style>
@@ -710,11 +707,6 @@ function quickFilter(catValue) {
 
 // Global Close on Escape
 document.addEventListener('keydown',e=>{if(e.key==='Escape') {closeModal(); closeConfirmation(); closeFeedback();}});
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
 </script>
 </body>
 </body>
