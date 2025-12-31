@@ -309,11 +309,14 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
       <p id="modalDesc"></p>
       
       <div class="modal-actions">
+        <div id="sizeOptionsWrapper" style="display:none; margin-bottom: 10px;">
+            <label for="modalSize" style="font-weight:700;">Select Size</label>
+            <select id="modalSize" aria-label="Choose size"></select>
+        </div>
+
         <div id="standardOptions">
             <label for="modalWeight" style="font-weight:700;">Choose Weight</label>
             <select id="modalWeight" aria-label="Choose weight"></select>
-            <label for="modalSize" style="font-weight:700;">Size (if applicable)</label>
-            <select id="modalSize" aria-label="Choose size"></select>
             <label for="modalPackets" style="font-weight:700;">Packets (1 - 100)</label>
             <select id="modalPackets" aria-label="Choose packet quantity"></select>
         </div>
@@ -366,7 +369,7 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
 
 <div class="min-popup">
   <div class="marquee-content">
-    "Shipping Charge Applicable On Every Product As Per KM"       |       "Special Offer: Buy 10 Scented Dhoop Stick Box , get 1 Box free"
+    "Shipping Charge Applicable On Every Product As Per KM"        |        "Special Offer: Buy 10 Scented Dhoop Stick Box , get 1 Box free"
   </div>
 </div>
 
@@ -416,7 +419,7 @@ const productsData = [
   {id:29,name:"Tulsi Kapoor",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/IMG-20251208-WA0053.jpg",sizes:["4'6\""], status: "available"},
   {id:30,name:"Kapoor Gugal",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/IMG-20251208-WA0053.jpg",sizes:["4'6\""], status: "available"},
   {id:31,name:"Gugal",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/IMG-20251208-WA0053.jpg",sizes:["4'6\""], status: "available"},
-  {id:32,name:"Row Dhoop Stick's",category:"row-dhoop",basePrice:{kg1:75},img:"te items/IMG-20251208-WA0053.jpg",sizes:["3'5\"","4'6\""], status: "available"} 
+  {id:32,name:"Row Dhoop Stick's",category:"row-dhoop",basePrice:{kg1:75},img:"te items/IMG-20251208-WA0053.jpg",sizes:["4inch 6mm","3inch 5mm"], status: "available"} 
 ];
 
 const gstProductIds = [21, 22, 23, 32];
@@ -482,6 +485,7 @@ const modalOrderBtn = document.getElementById('modalOrder');
 
 const modalWeight=document.getElementById('modalWeight');
 const modalSize=document.getElementById('modalSize');
+const sizeOptionsWrapper = document.getElementById('sizeOptionsWrapper');
 const modalPackets=document.getElementById('modalPackets');
 const standardOptions = document.getElementById('standardOptions');
 const rawOptions = document.getElementById('rawOptions');
@@ -504,15 +508,15 @@ function openModal(id){
   modalDesc.textContent=p.desc || `Premium quality ${displayCategoryLabel(p.category)}.`;
   modalImg.src=p.img;
 
-  // Handle SOLD OUT logic in Modal
+  // Handle SOLD OUT logic
   if(p.status === 'sold') {
       modalOrderBtn.disabled = true;
       modalOrderBtn.textContent = "Sold Out";
       modalOrderBtn.style.opacity = "0.5";
-      // Optional: Disable inputs
       modalWeight.disabled = true;
       modalPackets.disabled = true;
       customKgInput.disabled = true;
+      modalSize.disabled = true;
   } else {
       modalOrderBtn.disabled = false;
       modalOrderBtn.textContent = "Next Step";
@@ -520,14 +524,32 @@ function openModal(id){
       modalWeight.disabled = false;
       modalPackets.disabled = false;
       customKgInput.disabled = false;
+      modalSize.disabled = false;
+  }
+
+  // --- POPULATE SIZES (Common for both types) ---
+  modalSize.innerHTML = '';
+  if(p.sizes && p.sizes.length > 0) {
+      sizeOptionsWrapper.style.display = 'block';
+      p.sizes.forEach(s => {
+          const o = document.createElement('option');
+          o.value = s;
+          o.textContent = s;
+          modalSize.appendChild(o);
+      });
+  } else {
+      sizeOptionsWrapper.style.display = 'none';
+      const o = document.createElement('option'); o.value = "Standard"; o.textContent="Standard"; modalSize.appendChild(o);
   }
 
   const isRaw = gstProductIds.includes(p.id);
   if(isRaw) {
+      // Show RAW options, Hide Standard
       standardOptions.style.display = 'none';
       rawOptions.style.display = 'block';
       customKgInput.value = 1; 
   } else {
+      // Show Standard, Hide Raw
       standardOptions.style.display = 'block';
       rawOptions.style.display = 'none';
       modalWeight.innerHTML = '';
@@ -537,10 +559,6 @@ function openModal(id){
           modalWeight.innerHTML = `<option value="100GM">100GM</option><option value="200GM">200GM</option><option value="500GM">500GM</option><option value="1KG">1KG</option>`;
       }
       modalPackets.value='1';
-      modalSize.innerHTML='';
-      const sizes=p.sizes || [];
-      if(sizes.length===0) modalSize.innerHTML='<option value="">Standard Size</option>';
-      else sizes.forEach(s=>{const o=document.createElement('option');o.value=s; o.textContent=s;modalSize.appendChild(o);});
   }
   updateModalPrice();
   
@@ -586,7 +604,7 @@ function closeModal(){ modal.classList.remove('open'); document.body.style.overf
 /* --- OPEN CONFIRMATION --- */
 function openConfirmation() {
     if(!currentProduct) return;
-    if(currentProduct.status === 'sold') return; // Double check
+    if(currentProduct.status === 'sold') return;
 
     // Security/Validation
     const isRaw = gstProductIds.includes(currentProduct.id);
@@ -599,6 +617,9 @@ function openConfirmation() {
     }
 
     const catLabel = displayCategoryLabel(currentProduct.category);
+    // Get Size if applicable
+    const selectedSize = (currentProduct.sizes && currentProduct.sizes.length > 0) ? modalSize.value : '';
+
     let summaryHtml = `<div style="margin-bottom:8px; font-weight:700; color:var(--text-muted); font-size:12px; text-transform:uppercase;">${catLabel}</div>`;
     summaryHtml += `<div style="font-size:18px; font-weight:800; margin-bottom:10px;">${currentProduct.name}</div>`;
     
@@ -611,6 +632,11 @@ function openConfirmation() {
         const gst = total * 0.05;
         const final = total + gst;
 
+        if(selectedSize) {
+             summaryHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Size:</span> <strong>${selectedSize}</strong></div>`;
+             whatsappMsg += `*Size:* ${selectedSize}%0A`;
+        }
+
         summaryHtml += `
             <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Quantity:</span> <strong>${kg} KG</strong></div>
             <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Base Price:</span> <span>₹${total.toFixed(2)}</span></div>
@@ -622,21 +648,14 @@ function openConfirmation() {
     } else {
         const wt = modalWeight.value;
         const pkts = modalPackets.value;
-        const size = modalSize.value;
-        
-        let unitPrice=0;
-        if(wt==='100GM') unitPrice=currentProduct.basePrice.gm100;
-        else if(wt==='200GM') unitPrice=currentProduct.basePrice.gm200;
-        else if(wt==='500GM') unitPrice=currentProduct.basePrice.gm500;
-        else if(wt==='1KG') unitPrice=currentProduct.basePrice.kg1;
-        const total = unitPrice * pkts;
+        const total = (wt==='100GM'?currentProduct.basePrice.gm100 : wt==='200GM'?currentProduct.basePrice.gm200 : wt==='500GM'?currentProduct.basePrice.gm500 : currentProduct.basePrice.kg1) * pkts;
 
         summaryHtml += `
-            <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Variant:</span> <strong>${wt} ${size?`(${size})`:''}</strong></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Variant:</span> <strong>${wt} ${selectedSize?`(${selectedSize})`:''}</strong></div>
             <div style="display:flex; justify-content:space-between; margin-bottom:5px; padding-bottom:10px; border-bottom:1px solid #e5e7eb;"><span>Packets:</span> <strong>${pkts}</strong></div>
             <div style="display:flex; justify-content:space-between; font-size:18px; color:#991b1b; font-weight:800;"><span>Total:</span> <span>₹${total}</span></div>
         `;
-        whatsappMsg += `*Weight:* ${wt} ${size ? '('+size+')' : ''}%0A*Packets:* ${pkts}%0A--------------------%0A*GRAND TOTAL: ₹${total}*`;
+        whatsappMsg += `*Weight:* ${wt} ${selectedSize ? '('+selectedSize+')' : ''}%0A*Packets:* ${pkts}%0A--------------------%0A*GRAND TOTAL: ₹${total}*`;
     }
 
     confirmDetails.innerHTML = summaryHtml;
