@@ -10,7 +10,7 @@
 :root {
   --bg: #f4f6f8;
   --card: #ffffff;
-  --accent: #bd1b1b;       /* Original Red Accent */
+  --accent: #bd1b1b;       
   --accent-hover: #a51616;
   --muted: #6b7280;
   --radius: 12px;
@@ -31,6 +31,67 @@ body {
   padding: 24px 24px 90px 24px;
 }
 
+/* --- WELCOME SCREEN STYLES --- */
+#welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s;
+}
+
+#welcome-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Welcome Logo Style */
+.welcome-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(189, 27, 27, 0.2);
+    margin-bottom: 20px;
+    border: 2px solid var(--accent);
+    position: relative; 
+    /* Logo movement transition speed */
+    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10002;
+}
+
+/* Welcome Text Style (UPDATED FONT) */
+.welcome-text {
+    /* Font family changed to Times New Roman as requested */
+    font-family: 'Times New Roman', Times, serif; 
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-align: center;
+    padding: 0 20px;
+    opacity: 1;
+    transform: scale(1);
+    transition: all 1.2s ease-out;
+}
+
+/* Class added via JS to trigger zoom/fade */
+.welcome-text.animate-text {
+    transform: scale(1.8); /* Bada hoga */
+    opacity: 0; /* Gayab hoga */
+}
+
+body.loading { overflow: hidden; }
+
 .site { width: 100%; max-width: var(--max-width); }
 
 /* --- HEADER --- */
@@ -45,7 +106,17 @@ header.site-header {
 header.site-header:hover { transform: translateY(-2px); }
 
 .brand-left { display: flex; gap: 14px; align-items: center; }
-.brand-left img.logo { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; border: 2px solid rgba(255,255,255,0.12); }
+/* Main Logo hidden initially */
+.brand-left img.logo { 
+    width: 72px; height: 72px; 
+    border-radius: 10px; object-fit: cover; 
+    border: 2px solid rgba(255,255,255,0.12); 
+    opacity: 0; 
+    animation: fadeInMainLogo 0.5s ease forwards 1.8s;
+}
+
+@keyframes fadeInMainLogo { to { opacity: 1; } }
+
 .brand-info { line-height: 1.2; text-align: left; }
 .brand-name { font-size: 20px; font-weight: 800; letter-spacing: 0.6px; }
 .brand-tag { font-size: 13px; opacity: 0.95; }
@@ -125,7 +196,7 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
     letter-spacing: 0.5px;
 }
 .status-sold { background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db; }
-.status-available { background: #dcfce7; color: #166534; } /* Display:none removed here */
+.status-available { background: #dcfce7; color: #166534; }
 
 .product .img {
     width: 100%; height: auto; border-radius: 10px; overflow: hidden; 
@@ -157,7 +228,6 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
 .btn-order { background: var(--accent); color: #fff; box-shadow: 0 4px 6px rgba(189, 27, 27, 0.3); }
 .btn-order:hover { background: #a51616; box-shadow: 0 6px 12px rgba(189, 27, 27, 0.4); }
 
-/* DISABLED BUTTON */
 .btn:disabled, .btn[disabled] {
     background-color: #9ca3af; color: #fff; cursor: not-allowed;
     box-shadow: none; transform: none;
@@ -256,11 +326,17 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
 }
 </style>
 </head>
-<body>
+<body class="loading">
+
+<div id="welcome-screen">
+    <img id="welcome-logo" class="welcome-logo" src="te items/te logo.png" onerror="this.onerror=null;this.src='https://via.placeholder.com/150/bd1b1b/ffffff?text=TE'">
+    <div id="welcome-text" class="welcome-text">WELCOME TO TULSIENTERPRISE</div>
+</div>
+
 <div class="site">
 <header class="site-header">
   <div class="brand-left">
-    <img class="logo" src="te items/te logo.png" onerror="this.onerror=null;this.src='https://via.placeholder.com/150'">
+    <img id="header-logo" class="logo" src="te items/te logo.png" onerror="this.onerror=null;this.src='https://via.placeholder.com/150'">
     <div class="brand-info">
       <div class="brand-name">TULSI ENTERPRISE</div>
     </div>
@@ -374,6 +450,37 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
 </div>
 
 <script>
+// --- ANIMATED WELCOME PAGE LOGIC ---
+window.addEventListener('load', () => {
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const welcomeLogo = document.getElementById('welcome-logo');
+    const welcomeText = document.getElementById('welcome-text');
+    const headerLogo = document.getElementById('header-logo');
+
+    // 600ms Delay before animation starts
+    setTimeout(() => {
+        // 1. Trigger Logo Slide
+        const wRect = welcomeLogo.getBoundingClientRect();
+        const hRect = headerLogo.getBoundingClientRect();
+        const xDist = hRect.left - wRect.left;
+        const yDist = hRect.top - wRect.top;
+        const scale = hRect.width / wRect.width;
+
+        welcomeLogo.style.transform = `translate(${xDist}px, ${yDist}px) scale(${scale})`;
+        welcomeLogo.style.opacity = '0.2'; // Fade logo out slightly while moving
+
+        // 2. Trigger Text Animation (Zoom & Fade)
+        welcomeText.classList.add('animate-text');
+
+    }, 600);
+
+    // 2.0 Seconds: Remove Screen completely
+    setTimeout(() => {
+        welcomeScreen.classList.add('hidden');
+        document.body.classList.remove('loading');
+    }, 2000); 
+});
+
 // --- SECURITY UTILS ---
 function sanitizeInput(str) {
     if(!str) return '';
@@ -385,7 +492,6 @@ function sanitizeInput(str) {
 let isSubmitting = false;
 
 // --- PRODUCT DATA WITH STATUS ---
-// Status can be "available" or "sold"
 const productsData = [
   /* BLACK Scented Agarbatti */
   {id:1,name:"Gulab",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
@@ -434,7 +540,7 @@ const categoryLabels = {
 const productsEl = document.querySelector('.products');
 function displayCategoryLabel(c){ return categoryLabels[c] || c; }
 
-/* --- RENDER CARD (UPDATED) --- */
+/* --- RENDER CARD --- */
 function createProductCard(p){
   const art=document.createElement('article');
   art.className = `product ${p.status === 'sold' ? 'sold' : ''}`;
@@ -453,7 +559,6 @@ function createProductCard(p){
       priceHtml = `<div class="p-price">From ₹${displayPrice}</div>`;
   }
 
-  // --- UPDATED BADGE LOGIC HERE ---
   let statusHtml = '';
   if(p.status === 'sold') {
       statusHtml = `<span class="status-badge status-sold">Sold Out</span>`;
@@ -491,7 +596,6 @@ const standardOptions = document.getElementById('standardOptions');
 const rawOptions = document.getElementById('rawOptions');
 const customKgInput = document.getElementById('customKgInput');
 
-// CONFIRMATION VARS
 const confirmationModal = document.getElementById('confirmationModal');
 const confirmDetails = document.getElementById('confirmDetails');
 let currentOrderMsg = ""; 
@@ -508,7 +612,6 @@ function openModal(id){
   modalDesc.textContent=p.desc || `Premium quality ${displayCategoryLabel(p.category)}.`;
   modalImg.src=p.img;
 
-  // Handle SOLD OUT logic
   if(p.status === 'sold') {
       modalOrderBtn.disabled = true;
       modalOrderBtn.textContent = "Sold Out";
@@ -527,7 +630,6 @@ function openModal(id){
       modalSize.disabled = false;
   }
 
-  // --- POPULATE SIZES (Common for both types) ---
   modalSize.innerHTML = '';
   if(p.sizes && p.sizes.length > 0) {
       sizeOptionsWrapper.style.display = 'block';
@@ -544,12 +646,10 @@ function openModal(id){
 
   const isRaw = gstProductIds.includes(p.id);
   if(isRaw) {
-      // Show RAW options, Hide Standard
       standardOptions.style.display = 'none';
       rawOptions.style.display = 'block';
       customKgInput.value = 1; 
   } else {
-      // Show Standard, Hide Raw
       standardOptions.style.display = 'block';
       rawOptions.style.display = 'none';
       modalWeight.innerHTML = '';
@@ -601,12 +701,10 @@ function updateModalPrice(){
 
 function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; currentProduct=null; }
 
-/* --- OPEN CONFIRMATION --- */
 function openConfirmation() {
     if(!currentProduct) return;
     if(currentProduct.status === 'sold') return;
 
-    // Security/Validation
     const isRaw = gstProductIds.includes(currentProduct.id);
     if(isRaw) {
         const kg = parseFloat(customKgInput.value);
@@ -617,7 +715,6 @@ function openConfirmation() {
     }
 
     const catLabel = displayCategoryLabel(currentProduct.category);
-    // Get Size if applicable
     const selectedSize = (currentProduct.sizes && currentProduct.sizes.length > 0) ? modalSize.value : '';
 
     let summaryHtml = `<div style="margin-bottom:8px; font-weight:700; color:var(--text-muted); font-size:12px; text-transform:uppercase;">${catLabel}</div>`;
@@ -667,7 +764,6 @@ function openConfirmation() {
 
 function closeConfirmation() { confirmationModal.classList.remove('open'); modal.classList.add('open'); }
 
-/* --- FINALIZE --- */
 function finalizeOrder() {
     if (isSubmitting) return;
     isSubmitting = true;
@@ -688,7 +784,6 @@ function finalizeOrder() {
     }, 2000);
 }
 
-/* --- FEEDBACK --- */
 const feedbackModal = document.getElementById('feedbackModal');
 const stars = document.querySelectorAll('.star');
 let selectedRating = 0;
@@ -702,7 +797,6 @@ function submitFeedback() {
     selectedRating = 0; document.getElementById('feedbackText').value = ""; updateStars(0); closeFeedback();
 }
 
-/* --- SEARCH & CHIP FILTER --- */
 const searchInput=document.getElementById('searchInput'); const categoryFilter=document.getElementById('categoryFilter');
 searchInput.addEventListener('input',applyFilters);categoryFilter.addEventListener('change',applyFilters);
 function applyFilters(){
@@ -724,9 +818,7 @@ function quickFilter(catValue) {
     productsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Global Close on Escape
 document.addEventListener('keydown',e=>{if(e.key==='Escape') {closeModal(); closeConfirmation(); closeFeedback();}});
 </script>
-</body>
 </body>
 </html>
