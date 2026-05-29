@@ -445,7 +445,7 @@ nav.header-nav a:hover { background: rgba(255,255,255,0.2); transform: scale(1.0
 
 <div class="min-popup">
   <div class="marquee-content">
-    "Shipping Charge Applicable On Every Product As Per KM"        |        "Special Offer: Buy 10 Scented Dhoop Stick Box , get 1 Box free"
+    "Minimum Order 2KG"        |        "Shipping Charge Applicable On Every Product As Per KM(Kilometer)"        |        "Special Offer: Buy 10 Scented Dhoop Stick Box , get 1 Box free"
   </div>
 </div>
 
@@ -494,38 +494,43 @@ let isSubmitting = false;
 // --- PRODUCT DATA WITH STATUS ---
 const productsData = [
   /* BLACK Scented Agarbatti */
-  {id:1,name:"Gulab",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:2,name:"Mogra",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"}, 
+  {id:1,name:"Gulab",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"Gulab Black scented agarbatti.png",sizes:["8inch","9inch"], status: "available"},
+  {id:2,name:"Mogra",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"mogra black scented agarbatti.png",sizes:["8inch","9inch"], status: "available"}, 
   {id:3,name:"Tulsi Kapoor",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
   {id:4,name:"Kapoor Gugal",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
   {id:5,name:"Pineapple",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:6,name:"Chandan",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:6,name:"Chandan",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"chandan black scented agarbatti.png",sizes:["8inch","9inch"], status: "available"},
   {id:7,name:"Ponds",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
   {id:8,name:"Kevda",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
   {id:9,name:"Woods",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
   {id:10,name:"Panchratna",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:11,name:"Gulab",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/gulab white agarrbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:12,name:"Mogra",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/mogra white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:13,name:"Tulsi Kapoor",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:14,name:"Kapoor Gugal",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:15,name:"Pineapple",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/pineapple white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:16,name:"Chandan",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/chandan white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:17,name:"Ponds",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:18,name:"Kevda",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:19,name:"Woods",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/woods white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:20,name:"Panchratna",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/panchratna white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:21,name:"Black Row Agarbatti",category:"row-agarbatti",basePrice:{kg1:66},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:22,name:"White Row Agarbatti",category:"row-agarbatti",basePrice:{kg1:85},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:23,name:"Color Row Agarbatti",category:"row-agarbatti",basePrice:{kg1:90},img:"te items/color row agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
-  {id:24,name:"Gulab",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/gulab scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:25,name:"Mogra",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/mogra scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:26,name:"Chandan",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/chandan scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:27,name:"Pineapple",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/pineapple scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:28,name:"Lavender",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/lavender scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:29,name:"Tulsi Kapoor",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/Tulsikapoor scented shoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:30,name:"Kapoor Gugal",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/kapoor gugal scented dhoop .jpeg",sizes:["4'6\""], status: "available"},
-  {id:31,name:"Gugal",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/gugal scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
-  {id:32,name:"Row Dhoop Stick's",category:"row-dhoop",basePrice:{kg1:75},img:"te items/IMG-20251208-WA0053.jpg",sizes:["4inch 6mm","3inch 5mm"], status: "available"} 
+  {id:11,name:"Pandadi",category:"black-scented-agarbatti",basePrice:{gm100:25,gm200:50,gm500:125,kg1:250},img:"Pandadi black-scented-agarbatti.png",sizes:["8inch","9inch"], status: "available"},
+  /* WHITE Scented Agarbatti */
+  {id:1,name:"Gulab",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/gulab white agarrbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:2,name:"Mogra",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/mogra white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:3,name:"Tulsi Kapoor",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:4,name:"Kapoor Gugal",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:5,name:"Pineapple",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/pineapple white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:6,name:"Chandan",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/chandan white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:7,name:"Ponds",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:8,name:"Kevda",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:9,name:"Woods",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/woods white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:10,name:"Panchratna",category:"white-scented-agarbatti",basePrice:{gm100:30,gm200:60,gm500:150,kg1:280},img:"te items/panchratna white agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  /* ROW Scented Agarbatti */
+  {id:1,name:"Black Row Agarbatti",category:"row-agarbatti",basePrice:{kg1:66},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:2,name:"White Row Agarbatti",category:"row-agarbatti",basePrice:{kg1:85},img:"te items/IMG-20251208-WA0053.jpg",sizes:["8inch","9inch"], status: "available"},
+  {id:3,name:"Color Row Agarbatti",category:"row-agarbatti",basePrice:{kg1:90},img:"te items/color row agarbatti.jpg",sizes:["8inch","9inch"], status: "available"},
+  /* Scented DHOOP */
+  {id:1,name:"Gulab",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/gulab scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
+  {id:2,name:"Mogra",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/mogra scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
+  {id:3,name:"Chandan",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/chandan scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
+  {id:4,name:"Pineapple",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/pineapple scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
+  {id:5,name:"Lavender",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/lavender scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
+  {id:6,name:"Tulsi Kapoor",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/Tulsikapoor scented shoop.jpeg",sizes:["4'6\""], status: "available"},
+  {id:7,name:"Kapoor Gugal",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/kapoor gugal scented dhoop .jpeg",sizes:["4'6\""], status: "available"},
+  {id:8,name:"Gugal",category:"scented-dhoop",basePrice:{gm100:50},img:"te items/gugal scented dhoop.jpeg",sizes:["4'6\""], status: "available"},
+  /* ROW DHOOP */
+  {id:1,name:"Row Dhoop Stick's",category:"row-dhoop",basePrice:{kg1:75},img:"te items/IMG-20251208-WA0053.jpg",sizes:["4inch 6mm","3inch 5mm"], status: "available"} 
 ];
 
 const gstProductIds = [21, 22, 23, 32];
